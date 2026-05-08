@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -68,9 +68,21 @@
 <div class="main-content">
     <div class="topbar">
         <h4><i class="bi bi-exclamation-triangle text-danger me-2"></i>Low Stock Alerts</h4>
-        <a th:href="@{/products}" class="btn btn-outline-secondary btn-sm">
-            <i class="bi bi-arrow-left me-1"></i> Back to Products
-        </a>
+        <div class="d-flex align-items-center gap-2">
+            <a th:href="@{/products}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i> Back to Products
+            </a>
+            <div style="width:34px;height:34px;background:#4f46e5;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                <i class="bi bi-person-fill text-white"></i>
+            </div>
+            <span style="font-size:0.85rem;font-weight:500;" sec:authentication="name">User</span>
+            <form th:action="@{/logout}" method="post" class="mb-0">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit" class="btn btn-sm btn-outline-danger" title="Logout">
+                    <i class="bi bi-box-arrow-right me-1"></i>Logout
+                </button>
+            </form>
+        </div>
     </div>
 
     <div class="page-content">

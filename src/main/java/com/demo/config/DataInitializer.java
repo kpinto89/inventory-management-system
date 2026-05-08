@@ -2,7 +2,9 @@ package com.demo.config;
 
 import com.demo.model.Category;
 import com.demo.model.Product;
+import com.demo.model.Role;
 import com.demo.repository.ProductRepository;
+import com.demo.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,8 +15,17 @@ import java.math.BigDecimal;
 public class DataInitializer {
 
     @Bean
-    public CommandLineRunner loadData(ProductRepository repository) {
+    public CommandLineRunner loadData(ProductRepository repository, UserService userService) {
         return args -> {
+            // Seed default users
+            if (!userService.existsByUsername("admin")) {
+                userService.registerUser("admin", "admin123", "Administrator", Role.ROLE_ADMIN);
+            }
+            if (!userService.existsByUsername("user")) {
+                userService.registerUser("user", "user123", "Regular User", Role.ROLE_USER);
+            }
+
+            // Seed sample products
             if (repository.count() == 0) {
                 Product p1 = new Product();
                 p1.setName("Laptop Pro 15");
@@ -99,4 +110,3 @@ public class DataInitializer {
         };
     }
 }
-
