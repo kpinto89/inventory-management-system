@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | InvenTrack</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4f46e5 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-wrapper {
+            width: 100%;
+            max-width: 440px;
+            padding: 1rem;
+        }
+
+        .login-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .brand-logo {
+            width: 52px;
+            height: 52px;
+            background: #4f46e5;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+
+        .brand-logo i {
+            font-size: 1.6rem;
+            color: #fff;
+        }
+
+        .login-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #0f172a;
+            text-align: center;
+            margin-bottom: 0.25rem;
+        }
+
+        .login-subtitle {
+            font-size: 0.875rem;
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: #374151;
+            margin-bottom: 0.375rem;
+        }
+
+        .form-control {
+            border-color: #d1d5db;
+            border-radius: 10px;
+            padding: 0.65rem 0.875rem;
+            font-size: 0.9rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+        }
+
+        .input-group .input-group-text {
+            background: #f8fafc;
+            border-color: #d1d5db;
+            border-radius: 10px 0 0 10px;
+            color: #64748b;
+        }
+
+        .input-group .form-control {
+            border-radius: 0 10px 10px 0;
+        }
+
+        .btn-login {
+            background: #4f46e5;
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn-login:hover {
+            background: #4338ca;
+            transform: translateY(-1px);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .divider {
+            position: relative;
+            text-align: center;
+            margin: 1.25rem 0;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .divider span {
+            position: relative;
+            background: #fff;
+            padding: 0 0.75rem;
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        .credentials-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 1rem;
+        }
+
+        .credentials-box p {
+            margin: 0;
+            font-size: 0.82rem;
+            color: #475569;
+            line-height: 1.8;
+        }
+
+        .credentials-box strong {
+            color: #1e293b;
+        }
+
+        .alert {
+            border-radius: 10px;
+            font-size: 0.875rem;
+            padding: 0.75rem 1rem;
+        }
+
+        .form-check-input:checked {
+            background-color: #4f46e5;
+            border-color: #4f46e5;
+        }
+
+        .show-password-btn {
+            cursor: pointer;
+            border-color: #d1d5db;
+            background: #f8fafc;
+            border-radius: 0 10px 10px 0 !important;
+            color: #64748b;
+        }
+
+        .show-password-btn:hover {
+            background: #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-wrapper">
+    <div class="login-card">
+
+        <!-- Brand -->
+        <div class="brand-logo">
+            <i class="bi bi-box-seam"></i>
+        </div>
+        <h1 class="login-title">InvenTrack</h1>
+        <p class="login-subtitle">Sign in to your account to continue</p>
+
+        <!-- Alerts -->
+        <div th:if="${errorMessage}" class="alert alert-danger d-flex align-items-center gap-2 mb-3" role="alert">
+            <i class="bi bi-exclamation-circle-fill flex-shrink-0"></i>
+            <span th:text="${errorMessage}"></span>
+        </div>
+        <div th:if="${logoutMessage}" class="alert alert-success d-flex align-items-center gap-2 mb-3" role="alert">
+            <i class="bi bi-check-circle-fill flex-shrink-0"></i>
+            <span th:text="${logoutMessage}"></span>
+        </div>
+
+        <!-- Login Form -->
+        <form th:action="@{/login}" method="post">
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                    <input type="text" id="username" name="username"
+                           class="form-control" placeholder="Enter your username"
+                           autofocus autocomplete="username" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                    <input type="password" id="password" name="password"
+                           class="form-control" placeholder="Enter your password"
+                           autocomplete="current-password" required>
+                    <button type="button" class="btn show-password-btn border"
+                            onclick="togglePassword()" title="Show/hide password">
+                        <i class="bi bi-eye" id="eyeIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="mb-4 d-flex align-items-center justify-content-between">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="remember-me" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe" style="font-size:0.85rem;color:#64748b;">
+                        Remember me
+                    </label>
+                </div>
+            </div>
+
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+            <button type="submit" class="btn btn-login btn-primary w-100 text-white">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+            </button>
+        </form>
+
+        <div class="divider"><span>Default Credentials</span></div>
+
+        <!-- Default credentials hint -->
+        <div class="credentials-box">
+            <p>
+                <i class="bi bi-shield-fill-check text-primary me-1"></i>
+                <strong>Admin:</strong> username <code>admin</code> / password <code>admin123</code>
+            </p>
+            <p>
+                <i class="bi bi-person-fill text-secondary me-1"></i>
+                <strong>User:</strong> username <code>user</code> / password <code>user123</code>
+            </p>
+        </div>
+
+    </div>
+
+    <p class="text-center mt-3" style="color:rgba(255,255,255,0.5);font-size:0.8rem;">
+        InvenTrack v1.0 &copy; 2026
+    </p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function togglePassword() {
+        const pwd = document.getElementById('password');
+        const icon = document.getElementById('eyeIcon');
+        if (pwd.type === 'password') {
+            pwd.type = 'text';
+            icon.className = 'bi bi-eye-slash';
+        } else {
+            pwd.type = 'password';
+            icon.className = 'bi bi-eye';
+        }
+    }
+</script>
+</body>
+</html>
+
