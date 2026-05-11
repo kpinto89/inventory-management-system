@@ -25,17 +25,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class SecurityIntegrationTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+    private final MockMvc mockMvc;
+    private final DaoAuthenticationProvider authenticationProvider;
+    private final AuthenticationManager authenticationManager;
+    private final SecurityFilterChain securityFilterChain;
 
     @Autowired
-    private DaoAuthenticationProvider authenticationProvider;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private SecurityFilterChain securityFilterChain;
+    SecurityIntegrationTest(
+            MockMvc mockMvc,
+            DaoAuthenticationProvider authenticationProvider,
+            AuthenticationManager authenticationManager,
+            SecurityFilterChain securityFilterChain
+    ) {
+        this.mockMvc = mockMvc;
+        this.authenticationProvider = authenticationProvider;
+        this.authenticationManager = authenticationManager;
+        this.securityFilterChain = securityFilterChain;
+    }
 
     @Test
     void securityBeansAreCreated() {
@@ -91,4 +97,3 @@ class SecurityIntegrationTest {
                 .andExpect(header().string("X-Frame-Options", "SAMEORIGIN"));
     }
 }
-
